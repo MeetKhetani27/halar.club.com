@@ -21,6 +21,8 @@ export default defineConfig({
         drop_console: true,
       },
     },
+    target: 'esnext',
+    sourcemap: false,
   },
   optimizeDeps: {
     exclude: ['lucide-react'],

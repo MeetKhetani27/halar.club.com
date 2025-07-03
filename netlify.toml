@@ -1,6 +1,8 @@
 [build]
-  command = "npm run build"
+  base = "/"
+  command = "npm run build && npm run postbuild"
   publish = "dist"
+  environment = "production"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -8,4 +10,5 @@
 [[redirects]]
   from = "/*"
   to = "/index.html"
+  status = 200
   status = 200

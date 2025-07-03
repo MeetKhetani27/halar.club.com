@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "postbuild": "cp index.html dist/index.html"
+    "postbuild": "cp index.html dist/index.html",
+    "start": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
