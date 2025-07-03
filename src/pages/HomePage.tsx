@@ -1,3 +1,4 @@
+import React from 'react';
 import HeroSection from '../components/home/HeroSection';
 import AboutPreview from '../components/home/AboutPreview';
 import FeaturesSection from '../components/home/FeaturesSection';
@@ -7,13 +8,15 @@ import CtaSection from '../components/home/CtaSection';
 
 const HomePage = () => {
   return (
-    <div className="space-y-20">
+    <div className="min-h-screen">
       <HeroSection />
-      <AboutPreview />
-      <FeaturesSection />
-      <GalleryPreview />
-      <TestimonialsSection />
-      <CtaSection />
+      <div className="space-y-12 md:space-y-16 lg:space-y-20">
+        <AboutPreview />
+        <FeaturesSection />
+        <GalleryPreview />
+        <TestimonialsSection />
+        <CtaSection />
+      </div>
     </div>
   );
 };

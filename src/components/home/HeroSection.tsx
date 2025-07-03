@@ -8,6 +8,11 @@ const HeroSection = () => {
       subtitle="Join Halar Club and discover the majestic world of Kathiawadi horses through training, safaris, and a deep connection to India's equestrian heritage"
       buttonText="Explore More"
       buttonLink="/about"
+      overlay={true}
+      overlayOpacity={0.7}
+      height="full"
+      textAlign="center"
+      textColor="light"
     />
   );
 };

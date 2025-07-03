@@ -3,16 +3,21 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
   html {
     scroll-behavior: smooth;
   }
   
   body {
-    @apply font-body text-gray-800;
+    @apply font-body text-gray-900 antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading leading-tight;
+    @apply font-heading font-bold;
   }
   
   h1 {
@@ -50,24 +55,32 @@
 }
 
 @layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
   .btn {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .btn-primary {
-    @apply bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500;
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500;
   }
   
   .btn-outline {
-    @apply border border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-primary-500;
+    @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500;
+  }
+  
+  .btn-ghost {
+    @apply text-primary-600 hover:bg-primary-50 focus:ring-primary-500;
   }
   
   .section {
     @apply py-16 md:py-24;
-  }
-  
-  .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
   
   .card {
@@ -84,4 +97,82 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@layer utilities {
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    visibility: hidden;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, visibility;
+  }
+
+  .fade-in-section.is-visible {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-700;
 }

@@ -1,50 +1,19 @@
-import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from './Header';
+import React from 'react';
+import Navbar from './Navbar';
 import Footer from './Footer';
-import Preloader from '../ui/Preloader';
 
-const Layout = () => {
-  const [showPreloader, setShowPreloader] = useState(true);
+interface LayoutProps {
+  children: React.ReactNode;
+}
 
-  useEffect(() => {
-    const hasLoaded = sessionStorage.getItem('hasLoaded');
-    if (hasLoaded) {
-      setShowPreloader(false);
-    } else {
-      sessionStorage.setItem('hasLoaded', 'true');
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1
-    });
-
-    const sections = document.querySelectorAll('.fade-in-section');
-    sections.forEach(section => observer.observe(section));
-
-    return () => {
-      sections.forEach(section => observer.unobserve(section));
-    };
-  }, []);
-
+const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-col min-h-screen">
-      {showPreloader && <Preloader />}
-      <Header />
-      <main className="flex-grow">
-        <Outlet />
+    <div className="min-h-screen flex flex-col bg-white">
+      <Navbar />
+      <main className="flex-grow w-full overflow-hidden">
+        <div className="w-full">
+          {children}
+        </div>
       </main>
       <Footer />
     </div>

@@ -1,214 +1,244 @@
-import React, { useState, useCallback } from 'react';
-import SectionHeading from '../components/ui/SectionHeading';
-import { X, ZoomIn } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import HeroSection from '../components/ui/HeroSection';
 
-type ImageCategory = 'all' | 'horses' | 'events' | 'facilities' | 'training';
-
-interface GalleryImage {
-  id: number;
-  src: string;
-  alt: string;
-  category: ImageCategory;
-}
-
-const galleryImages: GalleryImage[] = [
-  // Horses Category
+// Sample gallery images - replace with your actual images
+const galleryImages = [
   {
     id: 1,
-    src: '/images/gallery/horse-riding-1.jpg',
-    alt: 'Professional Horse Riding Training',
-    category: 'horses'
+    src: '/images/gallery/horse1.jpg', 
+    alt: 'Kathiawadi horse standing majestically',
+    category: 'horses',
+    width: 600,
+    height: 400,
   },
   {
     id: 2,
-    src: '/images/gallery/horse-stable-1.jpg',
-    alt: 'Modern Horse Stable Interior',
-    category: 'facilities'
+    src: '/images/gallery/horse2.jpg',
+    alt: 'Horse riding training session',
+    category: 'training',
+    width: 400,
+    height: 600,
   },
   {
     id: 3,
-    src: '/images/gallery/horse-show-1.jpg',
-    alt: 'Annual Horse Show Competition',
-    category: 'events'
+    src: '/images/gallery/event1.jpg',
+    alt: 'Cultural celebration with horses',
+    category: 'events',
+    width: 600,
+    height: 400,
   },
   {
     id: 4,
-    src: '/images/gallery/horse-training-1.jpg',
-    alt: 'Expert Horse Training Session',
-    category: 'training'
+    src: '/images/gallery/horse3.jpg',
+    alt: 'Horses in stable',
+    category: 'horses',
+    width: 600,
+    height: 400,
   },
   {
     id: 5,
-    src: '/images/gallery/horse-riding-2.jpg',
-    alt: 'Advanced Horse Riding Techniques',
-    category: 'horses'
+    src: '/images/gallery/training1.jpg',
+    alt: 'Advanced riding techniques',
+    category: 'training',
+    width: 400,
+    height: 600,
   },
   {
     id: 6,
-    src: '/images/gallery/horse-stable-2.jpg',
-    alt: 'Spacious Outdoor Training Arena',
-    category: 'facilities'
+    src: '/images/gallery/event2.jpg',
+    alt: 'Moonlight safari experience',
+    category: 'events',
+    width: 600,
+    height: 400,
   },
   {
     id: 7,
-    src: '/images/gallery/horse-show-2.jpg',
-    alt: 'Horse Jumping Competition',
-    category: 'events'
+    src: '/images/gallery/landscape1.jpg',
+    alt: 'Beautiful riding trail',
+    category: 'landscapes',
+    width: 600,
+    height: 400,
   },
   {
     id: 8,
-    src: '/images/gallery/horse-training-2.jpg',
-    alt: 'Young Rider Training Program',
-    category: 'training'
+    src: '/images/gallery/horse4.jpg',
+    alt: 'Purebred Kathiawadi horse portrait',
+    category: 'horses',
+    width: 400,
+    height: 600,
   },
   {
     id: 9,
-    src: '/images/gallery/horse-riding-3.jpg',
-    alt: 'Sunset Trail Riding',
-    category: 'horses'
+    src: '/images/gallery/training2.jpg',
+    alt: 'Young rider learning basics',
+    category: 'training',
+    width: 600,
+    height: 400,
   },
   {
     id: 10,
-    src: '/images/gallery/horse-stable-3.jpg',
-    alt: 'Premium Horse Care Facilities',
-    category: 'facilities'
+    src: '/images/gallery/landscape2.jpg',
+    alt: 'Sunset trail ride',
+    category: 'landscapes',
+    width: 600,
+    height: 400,
   },
   {
     id: 11,
-    src: '/images/gallery/horse-show-3.jpg',
-    alt: 'Traditional Horse Dance Performance',
-    category: 'events'
+    src: '/images/gallery/event3.jpg',
+    alt: 'Cultural heritage celebration',
+    category: 'events',
+    width: 400,
+    height: 600,
   },
   {
     id: 12,
-    src: '/images/gallery/horse-training-3.jpg',
-    alt: 'Professional Dressage Training',
-    category: 'training'
+    src: '/images/gallery/horse5.jpg',
+    alt: 'Horse grooming session',
+    category: 'horses',
+    width: 600,
+    height: 400,
   }
 ];
 
-const categories = [
-  { id: 'all', label: 'All' },
-  { id: 'horses', label: 'Horse Riding' },
-  { id: 'events', label: 'Shows & Events' },
-  { id: 'facilities', label: 'Our Facilities' },
-  { id: 'training', label: 'Training Programs' },
-];
+// Fallback image for development purposes
+const fallbackImage = "https://via.placeholder.com/600x400/FFA500/FFFFFF?text=Halar+Club+Gallery";
+
+// Helper function to get image dimensions
+const getImageDimensions = (width: number, height: number) => {
+  const aspectRatio = width / height;
+  if (width > 600 || height > 400) {
+    if (aspectRatio > 1) {
+      return { width: 600, height: Math.round(600 / aspectRatio) };
+    } else {
+      return { width: Math.round(400 * aspectRatio), height: 400 };
+    }
+  }
+  return { width, height };
+};
 
 const GalleryPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<ImageCategory>('all');
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [selectedImage, setSelectedImage] = useState<typeof galleryImages[0] | null>(null);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [filteredImages, setFilteredImages] = useState(galleryImages);
+  
+  // Handle image filter
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredImages(galleryImages);
+    } else {
+      setFilteredImages(galleryImages.filter(img => img.category === activeFilter));
+    }
+  }, [activeFilter]);
 
-  const filteredImages = useCallback(() => {
-    if (selectedCategory === 'all') return galleryImages;
-    return galleryImages.filter(img => img.category === selectedCategory);
-  }, [selectedCategory]);
+  // Filter categories
+  const categories = [
+    { id: 'all', name: 'All Images' },
+    { id: 'horses', name: 'Horses' },
+    { id: 'training', name: 'Training' },
+    { id: 'events', name: 'Events' },
+    { id: 'landscapes', name: 'Landscapes' }
+  ];
 
   return (
-    <>
-      <div className="relative h-[60vh] md:h-[80vh]">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img 
-            src="/4.1.png" 
-            alt="Gallery Hero" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/50"></div>
-        </div>
-        
-        {/* Overlapping Content */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center text-white">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">Our Gallery</h1>
-              <p className="text-xl md:text-2xl opacity-90">
-                Capturing moments of equestrian excellence
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <section className="section bg-white">
-        <div className="container max-w-7xl mx-auto px-4">
-          <SectionHeading 
-            title="Photo Gallery" 
-            subtitle="Beautiful moments from Halar Club"
-            center
-          />
+    <div className="bg-gray-50 min-h-screen">
+      {/* Hero section */}
+      <HeroSection 
+        title="Our Gallery" 
+        subtitle="Experience the beauty and grace of Halar Club through our collection of images" 
+        className="pt-20"
+      />
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {categories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id as ImageCategory)}
-                className={`px-6 py-2 rounded-full transition-all ${selectedCategory === category.id
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
+      {/* Gallery section */}
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl py-12">
+        {/* Filter buttons */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveFilter(category.id)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 
+                ${activeFilter === category.id 
+                  ? 'bg-amber-600 text-white' 
+                  : 'bg-white text-gray-700 hover:bg-amber-100'}`}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
 
-          {/* Image Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {filteredImages().map(image => (
-              <div 
-                key={image.id}
-                className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                onClick={() => setSelectedImage(image)}
-              >
-                <div className="aspect-[4/3]">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-4">
-                  <div>
-                    <h3 className="text-white font-semibold text-lg">{image.alt}</h3>
-                    <p className="text-white/80 text-sm mt-1 capitalize">{image.category}</p>
+        {/* Masonry gallery */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredImages.map((image) => (
+            <div 
+              key={image.id}
+              className={`overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300`}
+              onClick={() => setSelectedImage(image)}
+            >
+              <div className="group relative cursor-pointer aspect-[4/3] bg-gray-200 overflow-hidden">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const { width, height } = getImageDimensions(image.width, image.height);
+                    target.src = `https://via.placeholder.com/${width}x${height}/FFA500/FFFFFF?text=${encodeURIComponent(image.alt)}`;
+                  }}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  style={{ aspectRatio: image.width / image.height }}
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <div className="p-4 w-full text-white">
+                    <p className="text-sm">{image.alt}</p>
                   </div>
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-8 h-8 drop-shadow-lg" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Image Modal */}
-          {selectedImage && (
-            <div 
-              className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-              onClick={() => setSelectedImage(null)}
-            >
-              <button
-                onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
-                className="absolute top-6 right-6 text-white/80 hover:text-white transition-colors"
-              >
-                <X className="w-8 h-8" />
-              </button>
-              <div className="relative max-w-5xl w-full" onClick={e => e.stopPropagation()}>
-                <img
-                  src={selectedImage.src}
-                  alt={selectedImage.alt}
-                  className="max-w-full max-h-[85vh] object-contain mx-auto rounded-lg shadow-2xl"
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                  <h3 className="text-white font-semibold text-xl">{selectedImage.alt}</h3>
-                  <p className="text-white/80 mt-2 capitalize">{selectedImage.category}</p>
-                </div>
               </div>
             </div>
-          )}
+          ))}
         </div>
-      </section>
-    </>
+
+        {/* No results message */}
+        {filteredImages.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">No images found for this category.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div 
+            className="max-w-5xl max-h-[90vh] relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              className="absolute -top-12 right-0 text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+              onClick={() => setSelectedImage(null)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <img
+              src={selectedImage.src}
+              alt={selectedImage.alt}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = fallbackImage;
+              }}
+              className="max-h-[80vh] max-w-full object-contain rounded"
+            />
+            <div className="mt-4 text-white">
+              <p>{selectedImage.alt}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

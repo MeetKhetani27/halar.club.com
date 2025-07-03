@@ -1,156 +1,297 @@
-import { useState } from 'react';
-import Hero from '../components/ui/Hero';
-import { MapPin, Phone, Mail, Clock, ChevronDown, ChevronUp } from 'lucide-react';
-import ContactForm from '../components/contact/ContactForm';
+import React, { useState } from 'react';
 
-const faqs = [
-  {
-    question: "What experience level do I need to join?",
-    answer: "We welcome riders of all experience levels, from complete beginners to advanced equestrians. Our expert instructors will ensure you receive appropriate guidance."
-  },
-  {
-    question: "What is the best time to visit?",
-    answer: "The best time for riding is during early morning (6:00 AM - 9:00 AM) or late afternoon (4:00 PM - 7:00 PM) when the weather is cooler. However, we're open throughout the day for visits and inquiries."
-  },
-  {
-    question: "Do you provide riding gear?",
-    answer: "Yes, we provide basic riding gear including helmets. However, we recommend bringing comfortable clothes and closed-toe shoes. For regular riders, we suggest investing in personal riding gear."
-  },
-  {
-    question: "How do I schedule a trial session?",
-    answer: "You can schedule a trial session by filling out our contact form, calling us directly, or visiting us during operating hours. We'll arrange a suitable time slot based on your preference."
-  }
-];
+import HeroSection from '../components/ui/HeroSection';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 
 const ContactPage = () => {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setFormSubmitted(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+      });
+    }, 1500);
   };
 
   return (
-    <>
-      <Hero
-        title="Contact Us"
-        subtitle="Get in touch with us for any inquiries or to schedule a visit"
-        image="/3.png"
+    <div className="bg-gray-50 min-h-screen">
+      {/* Hero section */}
+      <HeroSection 
+        title="Contact Us" 
+        subtitle="We'd love to hear from you. Get in touch with our team." 
+        className="pt-20"
       />
-      
-      <section className="section bg-white">
-        <div className="container max-w-7xl mx-auto px-4">
-          {/* Contact Form */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <div>
-              <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
-                <ContactForm />
+
+      {/* Contact section */}
+      {/* Contact section */}
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          {/* Contact info */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-amber-100 rounded-full text-amber-600">
+                    <MapPin size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Location</h4>
+                    <p className="text-gray-600">
+                      Halar Club, Kathiawad,<br />
+                      Gujarat, India
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-amber-100 rounded-full text-amber-600">
+                    <Phone size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Phone</h4>
+                    <p className="text-gray-600">+91 98765 43210</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-amber-100 rounded-full text-amber-600">
+                    <Mail size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Email</h4>
+                    <p className="text-gray-600">info@halarclub.com</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-amber-100 rounded-full text-amber-600">
+                    <Clock size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Opening Hours</h4>
+                    <p className="text-gray-600">
+                      Monday - Saturday: 9:00 AM - 6:00 PM<br />
+                      Sunday: 10:00 AM - 2:00 PM
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-8 pt-8 border-t border-gray-100">
+                <h4 className="font-medium text-gray-900 mb-4">Follow Us</h4>
+                <div className="flex gap-4">
+                  <a href="#" className="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-amber-100 hover:text-amber-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-facebook" viewBox="0 0 16 16">
+                      <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+                    </svg>
+                  </a>
+                  <a href="#" className="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-amber-100 hover:text-amber-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-instagram" viewBox="0 0 16 16">
+                      <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+                    </svg>
+                  </a>
+                  <a href="#" className="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-amber-100 hover:text-amber-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-twitter" viewBox="0 0 16 16">
+                      <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
-
-            {/* Contact Information */}
-            <div>
-              <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-                <div className="space-y-4">
-                  <div className="flex items-center text-gray-600">
-                    <MapPin className="w-6 h-6 mr-3 text-primary-500" />
-                    <span>Halar Stud Farm, Rajkot-Jamnagar Highway, Gujarat, India</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Phone className="w-6 h-6 mr-3 text-primary-500" />
-                    <a 
-                      href="tel:+919876543210" 
-                      className="hover:text-primary-500 transition-colors"
-                    >
-                      +91 98765 43210
-                    </a>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Mail className="w-6 h-6 mr-3 text-primary-500" />
-                    <a 
-                      href="mailto:info@halarclub.com" 
-                      className="hover:text-primary-500 transition-colors"
-                    >
-                      info@halarclub.com
-                    </a>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="w-6 h-6 mr-3 text-primary-500" />
-                    <span>Mon-Sun: 6:00 AM - 7:00 PM</span>
-                  </div>
+            
+            <div className="bg-white rounded-xl shadow-md p-6 md:p-8 mt-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h3>
+              
+              <div className="space-y-4">
+                <div className="pb-4 border-b border-gray-100">
+                  <h4 className="font-medium text-gray-900 mb-2">Do I need prior riding experience?</h4>
+                  <p className="text-gray-600 text-sm">No, we offer programs for all skill levels, including complete beginners.</p>
+                </div>
+                
+                <div className="pb-4 border-b border-gray-100">
+                  <h4 className="font-medium text-gray-900 mb-2">What age groups do you cater to?</h4>
+                  <p className="text-gray-600 text-sm">We welcome riders from age 8 and above, with special programs for children, adults, and seniors.</p>
+                </div>
+                
+                <div className="pb-4">
+                  <h4 className="font-medium text-gray-900 mb-2">Do you provide safety equipment?</h4>
+                  <p className="text-gray-600 text-sm">Yes, we provide all necessary safety equipment including helmets and protective vests.</p>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Map */}
-          <div className="bg-white p-8 rounded-lg shadow-lg mb-12">
-            <h2 className="text-2xl font-bold mb-6">Find Us</h2>
-            <div className="aspect-w-16 aspect-h-9">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.939148773246!2d72.5538444!3d23.0275438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84faa5a36071%3A0x9af325a448f09478!2sHalar%20Club!5e0!3m2!1sen!2sin!4v1651901234567!5m2!1sen!2sin"
-                width="100%"
-                height="300"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-          </div>
-
-          {/* Social Media Links
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Connect With Us</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
-                className="flex items-center justify-center p-4 text-gray-600 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-all">
-                <Facebook className="w-6 h-6 mr-2" />
-                <span>Facebook</span>
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center p-4 text-gray-600 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-all">
-                <Instagram className="w-6 h-6 mr-2" />
-                <span>Instagram</span>
-              </a>
-            </div>
-            <div className="mt-6 p-4 bg-primary-50 rounded-lg">
-              <p className="text-center text-gray-600">Follow us on social media for updates, events, and beautiful moments from Halar Club!</p>
-            </div>
-          </div> */}
-          {/* FAQ Section */}
-          <div className="mt-16 bg-gray-50 py-12 rounded-xl">
-            <h2 className="text-3xl font-bold mb-2 text-center">Frequently Asked Questions</h2>
-            <p className="text-gray-600 text-center mb-8">Find quick answers to common questions about Halar Club</p>
-            <div className="max-w-3xl mx-auto space-y-4 px-4">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <button
-                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
-                    onClick={() => toggleFaq(index)}
+          
+          {/* Contact form */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Send Us a Message</h3>
+              
+              {formSubmitted ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="p-4 bg-green-100 rounded-full text-green-600 mb-4">
+                    <CheckCircle size={32} />
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Thank You!</h4>
+                  <p className="text-gray-600 max-w-md mb-6">
+                    Your message has been successfully sent. We will contact you very soon!
+                  </p>
+                  <button 
+                    onClick={() => setFormSubmitted(false)}
+                    className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
                   >
-                    <span className="font-semibold text-lg">{faq.question}</span>
-                    {openFaq === index ? (
-                      <ChevronUp className="w-5 h-5 text-primary-500" />
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        Your Name*
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address*
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Enter your phone number"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                        Subject*
+                      </label>
+                      <select
+                        id="subject"
+                        name="subject"
+                        required
+                        value={formData.subject}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all appearance-none bg-white"
+                      >
+                        <option value="">Select a subject</option>
+                        <option value="Riding Lessons">Riding Lessons</option>
+                        <option value="Adventure Experience">Adventure Experience</option>
+                        <option value="Corporate Events">Corporate Events</option>
+                        <option value="Membership">Membership</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                      Your Message*
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      rows={6}
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all resize-none"
+                      placeholder="Enter your message here..."
+                    ></textarea>
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`inline-flex items-center justify-center px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-300 w-full md:w-auto ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </>
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-primary-500" />
+                      <>
+                        <Send size={20} className="mr-2" />
+                        Send Message
+                      </>
                     )}
                   </button>
-                  <div 
-                    className={`px-6 transition-all duration-300 ease-in-out overflow-hidden ${
-                      openFaq === index ? 'max-h-96 py-4 opacity-100' : 'max-h-0 py-0 opacity-0'
-                    }`}
-                  >
-                    <p className="text-gray-600">{faq.answer}</p>
-                  </div>
+                </form>
+              )}
+            </div>
+            
+            {/* Map */}
+            <div className="mt-8 bg-white rounded-xl shadow-md p-6 md:p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Our Location</h3>
+              <div className="aspect-[16/9] bg-gray-200 rounded-lg overflow-hidden">
+                {/* Replace with actual Google Maps embed or map component */}
+                <div className="w-full h-full bg-gray-300 flex items-center justify-center">
+                  <p className="text-gray-600">Map placeholder - replace with actual Google Maps embed</p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 };
 

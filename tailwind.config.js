@@ -5,16 +5,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#e6eaf4',
-          100: '#ccd5e9',
-          200: '#99abd3',
-          300: '#6680bd',
-          400: '#3356a7',
-          500: '#002C91',
-          600: '#002374',
-          700: '#001a57',
-          800: '#00113a',
-          900: '#00091d',
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
         },
         secondary: {
           50: '#f0f9ff',
@@ -46,11 +46,42 @@ export default {
         body: ['Inter', 'sans-serif'],
       },
       backgroundImage: {
-        'hero-pattern': "url('https://images.pexels.com/photos/10013567/pexels-photo-10013567.jpeg?auto=compress&cs=tinysrgb&w=1600')",
-        'safari-pattern': "url('https://images.pexels.com/photos/1996333/pexels-photo-1996333.jpeg?auto=compress&cs=tinysrgb&w=1600')",
-        'about-pattern': "url('https://images.pexels.com/photos/2662485/pexels-photo-2662485.jpeg?auto=compress&cs=tinysrgb&w=1600')",
+        'hero-pattern': "url('/2.png')",
+        'safari-pattern': "url('/3.png')",
+        'about-pattern': "url('/4.png')",
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'slide-in': 'slideIn 0.5s ease-out forwards',
+        'pulse-slow': 'pulse 3s infinite',
+        'bounce-slow': 'bounce 2s infinite',
+        'float': 'float 6s ease-in-out infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      },
+      transitionDuration: {
+        '2000': '2000ms',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/forms'),
+  ],
 };

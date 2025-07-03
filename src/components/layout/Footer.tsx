@@ -3,77 +3,146 @@ import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    company: [
+      { label: 'About Us', to: '/about' },
+      { label: 'Services', to: '/services' },
+      { label: 'Gallery', to: '/gallery' },
+      { label: 'Contact', to: '/contact' },
+    ],
+    services: [
+      { label: 'Horse Riding', to: '/blog/safaris' },
+      { label: 'Training', to: '/services' },
+      { label: 'Moon Night Rides', to: '/blog/moon-night-rides' },
+      { label: 'Games', to: '/blog/games' },
+    ],
+    legal: [
+      { label: 'Privacy Policy', to: '/privacy' },
+      { label: 'Terms of Service', to: '/terms' },
+    ],
+  };
+
+  const socialLinks = [
+    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+  ];
+
   return (
-    <footer className="bg-primary-900 text-white pt-16 pb-8">
-      <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-xl font-bold mb-4">Halar Club</h3>
-            <p className="mb-4 text-gray-300">
-              Preserving the tradition of Kathiawadi horse riding while offering world-class training and memorable safari experiences.
+    <footer className="bg-gray- #FFF2F0EF text-blue-900">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Company Info */}
+          <div className="space-y-6">
+            <Link to="/" className="flex items-center space-x-2">
+              <img src="/LOGO.png" alt="Halar Club" className="h-12 w-auto" />
+            </Link>
+            <p className="text-gray-400 leading-relaxed">
+              Experience the rich heritage of Kathiawadi horse riding through our premium training programs, safaris, and cultural experiences.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-primary-300 transition-colors" aria-label="Facebook">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-white hover:text-primary-300 transition-colors" aria-label="Instagram">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-white hover:text-primary-300 transition-colors" aria-label="Twitter">
-                <Twitter size={20} />
-              </a>
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-amber-500 transition-colors duration-200"
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-6 w-6" />
+                </a>
+              ))}
             </div>
           </div>
-          
+
+          {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link></li>
-              <li><Link to="/gallery" className="text-gray-300 hover:text-white transition-colors">Gallery</Link></li>
-              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
+            <h3 className="text-black text-lg font-semibold mb-6">Quick Links</h3>
+            <ul className="space-y-4">
+              {footerLinks.company.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-gray-400 hover:text-amber-500 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          
+
+          {/* Services */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Contact Info</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <MapPin size={20} className="mr-2 mt-1 flex-shrink-0" />
-                <span>Halar Stud Farm, Rajkot-Jamnagar Highway, Gujarat, India</span>
-              </li>
-              <li className="flex items-center">
-                <Phone size={20} className="mr-2 flex-shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-primary-300 transition-colors">+91 98765 43210</a>
-              </li>
-              <li className="flex items-center">
-                <Mail size={20} className="mr-2 flex-shrink-0" />
-                <a href="mailto:info@halarclub.com" className="hover:text-primary-300 transition-colors">info@halarclub.com</a>
-              </li>
+            <h3 className="text-black text-lg font-semibold mb-6">Our Services</h3>
+            <ul className="space-y-4">
+              {footerLinks.services.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-gray-400 hover:text-amber-500 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          
+
+          {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Hours</h3>
-            <ul className="space-y-2 text-gray-300">
-              <li className="flex justify-between">
-                <span>Monday - Friday:</span>
-                <span>9:00 AM - 6:00 PM</span>
+            <h3 className="text-black text-lg font-semibold mb-6">Contact Us</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <MapPin className="h-6 w-6 text-amber-500 flex-shrink-0" />
+                <span className="text-gray-400">
+                  Halar Club, Kathiawad, Gujarat, India
+                </span>
               </li>
-              <li className="flex justify-between">
-                <span>Saturday:</span>
-                <span>8:00 AM - 7:00 PM</span>
+              <li className="flex items-center space-x-3">
+                <Phone className="h-6 w-6 text-amber-500" />
+                <a
+                  href="tel:+919876543210"
+                  className="text-gray-400 hover:text-amber-500 transition-colors duration-200"
+                >
+                  +91 98765 43210
+                </a>
               </li>
-              <li className="flex justify-between">
-                <span>Sunday:</span>
-                <span>8:00 AM - 5:00 PM</span>
+              <li className="flex items-center space-x-3">
+                <Mail className="h-6 w-6 text-amber-500" />
+                <a
+                  href="mailto:info@halarclub.com"
+                  className="text-gray-400 hover:text-amber-500 transition-colors duration-200"
+                >
+                  info@halarclub.com
+                </a>
               </li>
             </ul>
           </div>
         </div>
-        
-        <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Halar Club. All rights reserved. | Developed by MK TECHNOLOGIES</p>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-800 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-400 text-sm">
+              © {currentYear} Halar Club. All rights reserved.
+            </p>
+            <ul className="flex space-x-6">
+              {footerLinks.legal.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-gray-400 hover:text-amber-500 transition-colors duration-200 text-sm"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>
